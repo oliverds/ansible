@@ -1,0 +1,31 @@
+- name: PHP CLI Configuration error_reporting = E_ALL
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/cli/php.ini
+    regexp: '^error_reporting = '
+    line: error_reporting = E_ALL
+
+- name: PHP CLI Configuration display_errors = On
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/cli/php.ini
+    regexp: '^display_errors = '
+    line: display_errors = On
+
+- name: PHP CLI Configuration cgi.fix_pathinfo=0
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/cli/php.ini
+    regexp: '^cgi.fix_pathinfo='
+    insertafter: '^;cgi.fix_pathinfo='
+    line: cgi.fix_pathinfo=0
+
+- name: PHP CLI Configuration memory_limit = 512M
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/cli/php.ini
+    regexp: '^memory_limit = '
+    line: memory_limit = 512M
+
+- name: PHP CLI Configuration date.timezone = UTC
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/cli/php.ini
+    regexp: '^date.timezone='
+    insertafter: '^;date.timezone'
+    line: date.timezone = UTC

@@ -1,0 +1,8 @@
+- name: Disable protected_regular
+  ansible.builtin.lineinfile:
+    path: /usr/lib/sysctl.d/99-protect-links.conf
+    regexp: '^fs.protected_regular = '
+    line: fs.protected_regular = 0
+
+- name: Read Values From All System Directories
+  shell: sysctl --system

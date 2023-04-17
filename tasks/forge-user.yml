@@ -1,0 +1,57 @@
+- name: Ensure Group Forge Exists
+  ansible.builtin.group:
+    name: forge
+
+- name: Setup Forge User
+  ansible.builtin.user:
+    name: forge
+    shell: /bin/bash
+    groups: forge,sudo
+
+- name: Create The Server SSH Key
+  ansible.builtin.user:
+    name: forge
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: forge
+    key: "{{ lookup('file', '.ssh/id_rsa.pub') }}"
+
+- name: Create The Forge .forge Directory
+  ansible.builtin.file:
+    path: /home/forge/.forge
+    state: directory
+
+- name: Copy .profile profile to Forge User
+  ansible.builtin.copy:
+    src: /root/.profile
+    dest: /home/forge/.profile
+
+- name: Copy .bashrc profile to Forge User
+  ansible.builtin.copy:
+    src: /root/.bashrc
+    dest: /home/forge/.bashrc
+
+- name: Check Permissions Of /home/forge Directory
+  ansible.builtin.file:
+    path: /home/forge
+    state: directory
+    recurse: yes
+    owner: forge
+    group: forge
+    mode: '755'
+
+- name: Check Permissions Of /home/forge/.ssh/id_rsa File
+  ansible.builtin.file:
+    path: /home/forge/.ssh/id_rsa
+    state: file
+    mode: '700'
+
+- name: Check Permissions Of /home/forge/.ssh/authorized_keys File
+  ansible.builtin.file:
+    path: /home/forge/.ssh/authorized_keys
+    state: file
+    mode: '600'

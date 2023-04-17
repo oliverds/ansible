@@ -1,0 +1,10 @@
+- name: Add Hostname
+  ansible.builtin.copy:
+    content: mars
+    dest: /etc/hostname
+
+- name: Hostname On Hosts File
+  shell: sed -i 's/127\.0\.0\.1.*localhost/127.0.0.1 mars.localdomain mars localhost/' /etc/hosts
+
+- name: Set Hostnmae
+  shell: hostname mars

@@ -1,0 +1,24 @@
+- name: Install Unattended Upgrades
+  ansible.builtin.apt:
+    name: unattended-upgrades
+    force: true
+
+- name: Configure Unattended-Upgrade
+  ansible.builtin.copy:
+    content: |
+      Unattended-Upgrade::Allowed-Origins {
+          "Ubuntu jammy-security";
+      };
+      Unattended-Upgrade::Package-Blacklist {
+          //
+      };
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+
+- name: Configure APT::Periodic
+  ansible.builtin.copy:
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Download-Upgradeable-Packages "1";
+      APT::Periodic::AutocleanInterval "7";
+      APT::Periodic::Unattended-Upgrade "1";
+    dest: /etc/apt/apt.conf.d/10periodic

@@ -1,0 +1,12 @@
+- name: Download Composer
+  shell: curl -sS https://getcomposer.org/installer | php
+
+- name: Move Composer Globally
+  shell: mv composer.phar /usr/local/bin/composer
+
+- name: Allow Self Update Composer
+  community.general.sudoers:
+    name: composer
+    state: present
+    user: forge
+    commands: /usr/local/bin/composer self-update*

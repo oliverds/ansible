@@ -1,0 +1,105 @@
+- hosts: localhost
+
+  tasks:
+    # - name: Configure Swap Disk
+    #   ansible.builtin.include_tasks: tasks/swap-disk.yml
+
+    - name: Core Packages
+      ansible.builtin.include_tasks: tasks/core.yml
+
+    - name: Install Python Httpie
+      ansible.builtin.include_tasks: tasks/httpie.yml
+
+    - name: Install AWSCLI
+      ansible.builtin.include_tasks: tasks/awscli.yml
+
+    - name: Disable Password Authentication Over SSH
+      ansible.builtin.include_tasks: tasks/disable-password-ssh.yml
+
+    # - name: Set The Hostname
+    #   ansible.builtin.include_tasks: tasks/hostname.yml
+
+    - name: Set The Timezone
+      shell: ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+
+    - name: Configure Root User
+      ansible.builtin.include_tasks: tasks/root-user.yml
+
+    - name: Configure Forge User
+      ansible.builtin.include_tasks: tasks/forge-user.yml
+
+    - name: Copy GitHub Public Keys Into Known Hosts File
+      shell: ssh-keyscan -H github.com >> /home/forge/.ssh/known_hosts
+
+    - name: Copy Bitbucket Public Keys Into Known Hosts File
+      shell: ssh-keyscan -H bitbucket.org >> /home/forge/.ssh/known_hosts
+
+    - name: Copy Gitlab Public Keys Into Known Hosts File
+      shell: ssh-keyscan -H gitlab.com >> /home/forge/.ssh/known_hosts
+
+    - name: Configure Git User Name
+      community.general.git_config:
+        name: user.name
+        scope: global
+        value: Oliver
+
+    - name: Configure Git User Email
+      community.general.git_config:
+        name: user.email
+        scope: global
+        value: forge@oli.fastmail.com
+
+    # - name: Install UFW
+    #   ansible.builtin.include_tasks: tasks/ufw.yml
+
+    - name: Allow FPM Restart
+      community.general.sudoers:
+        name: php-fpm
+        state: present
+        user: forge
+        commands: /usr/sbin/service php8.2-fpm reload
+
+    - name: Allow Supervisor Reload
+      community.general.sudoers:
+        name: supervisor
+        state: present
+        user: forge
+        commands: /usr/bin/supervisorctl *
+
+    - name: Install Base PHP Packages
+      ansible.builtin.include_tasks: tasks/php.yml
+
+    - name: Install Composer Package Manager
+      ansible.builtin.include_tasks: tasks/composer.yml
+
+    - name: Misc. PHP CLI Configuration
+      ansible.builtin.include_tasks: tasks/php-cli-config.yml
+
+    - name: Misc. PHP FPM Configuration
+      ansible.builtin.include_tasks: tasks/php-fpm-config.yml
+
+    - name: Ensure Imagick Is Available
+      ansible.builtin.include_tasks: tasks/imagick.yml
+
+    - name: Optimize FPM Processes
+      ansible.builtin.include_tasks: tasks/fpm-processes.yml
+
+    - name: Configure Sessions Directory Permissions
+      ansible.builtin.include_tasks: tasks/php-sessions.yml
+
+    - name: Install Caddy
+      ansible.builtin.include_tasks: tasks/caddy.yml
+
+    - name: Install Node
+      ansible.builtin.include_tasks: tasks/node.yml
+
+    # - name: Install Litestream
+
+    - name: Install Supervisor
+      ansible.builtin.include_tasks: tasks/supervisor.yml
+
+    - name: Disable protected_regular
+      ansible.builtin.include_tasks: tasks/protected-regular.yml
+
+    - name: Setup Unattended Security Upgrades
+      ansible.builtin.include_tasks: tasks/unattended-upgrades.yml

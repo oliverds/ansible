@@ -1,0 +1,23 @@
+- name: Install Node 18 List
+  shell: curl --silent --location https://deb.nodesource.com/setup_18.x | bash -
+
+- name: Install Node
+  ansible.builtin.apt:
+    name: nodejs
+    update_cache: true
+    force: true
+
+- name: Install "pm2" Node.js Package Globally.
+  community.general.npm:
+    name: pm2
+    global: true
+
+- name: Install "gulp" Node.js Package Globally.
+  community.general.npm:
+    name: gulp
+    global: true
+
+- name: Install "yarn" Node.js Package Globally.
+  community.general.npm:
+    name: yarn
+    global: true

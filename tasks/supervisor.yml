@@ -1,0 +1,9 @@
+- name: Install Supervisor
+  ansible.builtin.apt:
+    name: supervisor
+
+- name: Enable Supervisor
+  shell: systemctl enable supervisor.service
+
+- name: Start Supervisor
+  shell: service supervisor start

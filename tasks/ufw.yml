@@ -1,0 +1,15 @@
+- name: Install UFW
+  ansible.builtin.apt:
+    name: ufw
+
+- name: Allow Access To Port 22
+  shell: ufw allow 22
+
+- name: Allow Access To Port 80
+  shell: ufw allow 80
+
+- name: Allow Access To Port 443
+  shell: ufw allow 443
+
+- name: Enable UFW
+  shell: ufw --force enable

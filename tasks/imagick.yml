@@ -1,0 +1,14 @@
+- name: Install libmagickwand-dev
+  ansible.builtin.apt:
+    name: libmagickwand-dev
+    force: true
+
+- name: Add imagick Extension
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/mods-available/imagick.ini
+    line: extension=imagick.so
+    create: yes
+
+- name: Install php8.2-imagick
+  ansible.builtin.apt:
+    name: php8.2-imagick

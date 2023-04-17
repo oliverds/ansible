@@ -1,0 +1,11 @@
+- name: Configure Sessions Directory Permissions
+  ansible.builtin.file:
+    path: /var/lib/php/sessions
+    state: directory
+    mode: '733'
+
+- name: Configure Sessions Directory Permissions
+  ansible.builtin.file:
+    path: /var/lib/php/sessions
+    state: directory
+    mode: '+t'

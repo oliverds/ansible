@@ -1,0 +1,52 @@
+- name: Upgrade The Base Packages
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: Install software-properties-common
+  ansible.builtin.apt:
+    name: software-properties-common
+    force: true
+
+- name: Add PHP Repository From PPA
+  ansible.builtin.apt_repository:
+    repo: ppa:ondrej/php
+
+- name: Add Universe Repository
+  shell: add-apt-repository universe -y
+
+- name: Install Base Packages
+  ansible.builtin.apt:
+    pkg:
+    - build-essential
+    - curl
+    - pkg-config
+    - fail2ban
+    - gcc
+    - g++
+    - git
+    - libmcrypt4
+    - libpcre3-dev
+    - make
+    - python3
+    - python3-pip
+    - sendmail
+    - supervisor
+    - ufw
+    - zip
+    - unzip
+    - whois
+    - zsh
+    - ncdu
+    - uuid-runtime
+    - acl
+    - libpng-dev
+    - libmagickwand-dev
+    - libpcre2-dev
+    - cron
+    - jq
+    - net-tools
+    dpkg_options: 'force-confold,force-confdef'
+    force: true
+    update_cache: true

@@ -1,0 +1,19 @@
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: root
+    key: "{{ lookup('file', '.ssh/id_rsa.pub') }}"
+
+- name: Check Permissions Of /root Directory
+  ansible.builtin.file:
+    path: /root
+    state: directory
+    owner: root
+    group: root
+
+- name: Check Permissions Of /root/.ssh Directory
+  ansible.builtin.file:
+    path: /root/.ssh
+    state: directory
+    recurse: yes
+    owner: root
+    group: root

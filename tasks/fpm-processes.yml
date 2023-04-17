@@ -1,0 +1,39 @@
+- name: FPM Pool Settings user = forge
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/pool.d/www.conf
+    regexp: '^user = '
+    line: user = forge
+
+- name: FPM Pool Settings group = forge
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/pool.d/www.conf
+    regexp: '^group = '
+    line: group = forge
+
+- name: FPM Pool Settings listen.owner = forge
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/pool.d/www.conf
+    regexp: '^listen.owner = '
+    insertafter: '^;listen.owner'
+    line: listen.owner = forge
+
+- name: FPM Pool Settings listen.group = forge
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/pool.d/www.conf
+    regexp: '^listen.group = '
+    insertafter: '^;listen.group'
+    line: listen.group = forge
+
+- name: FPM Pool Settings listen.mode = 0666
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/pool.d/www.conf
+    regexp: '^listen.mode = '
+    insertafter: '^;listen.mode'
+    line: listen.mode = 0666
+
+- name: FPM Pool Settings request_terminate_timeout = 60
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/pool.d/www.conf
+    regexp: '^request_terminate_timeout = '
+    insertafter: '^;request_terminate_timeout'
+    line: request_terminate_timeout = 60
